@@ -7,10 +7,11 @@
  */
 public class Patient implements Comparable<Patient>{
 	
-	static int order;
+	
 	String first;
 	String last;
 	int priority;
+	int order = 0;
 	
 	/**
 	 * Constructor
@@ -18,10 +19,11 @@ public class Patient implements Comparable<Patient>{
 	 * @param last
 	 * @param priority
 	 */
-	public Patient(String first, String last, int priority) {
+	public Patient(String first, String last, int priority, int order) {
 		this.first= first;
 		this.last = last;
 		this.priority = priority;
+		this.order = order;
 	}
 	
 	public String getFirst() {
@@ -32,6 +34,9 @@ public class Patient implements Comparable<Patient>{
 	}
 	public int getPriority() {
 		return priority;
+	}
+	public int getOrder() {
+		return order;
 	}
 	
 	public void setFirst(String first) {
@@ -50,25 +55,23 @@ public class Patient implements Comparable<Patient>{
 	 * @param Patient other
 	 */
 	public int compareTo(Patient other) {
-		if (first.compareTo(other.getFirst()) > 0) {
+		if (priority > other.getPriority()) {
 			return 1;
 		}
-		else if (first.compareTo(other.getFirst()) < 0) {
+		else if (priority < other.getPriority()) {
 			return -1;
 		}
 		else {
-			if (last.compareTo(other.getLast()) > 0) {
+			if (order > other.getOrder()) {
 				return 1;
 			}
-			else if (last.compareTo(other.getLast()) < 0) {
-				return -1;
-			}
-			else {
-				return 0;
-			}
+			return -1;
 		}
 	}
 	
-	
+	public String toString() {
+		String temp = first + " " + last + " " + priority + " " + order;
+		return temp;
+	}
 
 }

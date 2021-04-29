@@ -8,42 +8,77 @@ import java.util.*;
 
 public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 	
-	ArrayList<E> queue = new ArrayList<E>();
+	private int count = -1;
+	private ArrayList<E> queue = new ArrayList<E>();
+	
+	
+	public void printArray() {
+		System.out.println(Arrays.toString(queue.toArray()));
+	}
 	
 	/**
 	 * Dequeue value from root
 	 * @return E
 	 */
 	public E dequeue() {
-		if (queue.size() == 0) {
+		
+		if (isEmpty()) {
 			throw new NoSuchElementException("Queue is empty");
 			
 		}
-		else {
+		else if (count == 0) {
 			E returnto = queue.get(0);
-			E temp = queue.get(queue.size() - 1);
-			queue.set(queue.size() - 1, null);
+			queue.set(0, null);
+			count--;
+			return returnto;
+		}
+		else {
+
+			E returnto = queue.get(0);
+			E temp = queue.get(count);
+			//printArray();
+			queue.set(count, null);
 			queue.set(0,temp);
 			
 			int current = 0;
-			while (queue.get(current).compareTo(getRightVal(current)) > 0
-					|| queue.get(current).compareTo(getLeftVal(current)) > 0) {
-				
-				if (getLeftVal(current).compareTo(getRightVal(current)) < 0) {
-					swap(current, getLeft(current));
-					current = getLeft(current);
-				}
-				else if (getLeftVal(current).compareTo(getRightVal(current)) > 0) {
-					swap(current, getRight(current));
-					current = getRight(current);
-				}
+			int largestChild = largestChild(current);
+			while (largestChild != -1) {
+				swap(current,largestChild);
+				current = largestChild;
+				largestChild = largestChild(current);
 				
 			}
+			count--;
 			return returnto;
 			
 			
 			
 			
+		}
+	}
+	
+	/**
+	 * Return the index of the greatest child with current as the parent
+	 * @param current
+	 * @return
+	 */
+	private int largestChild(int current) {
+		if(getRight(current) < count && getLeft(current) < count) {
+			if (getRightVal(current).compareTo(getLeftVal(current)) > 0) {
+				return getRight(current);
+			}
+			return getLeft(current);
+		}
+		
+		else if (getRight(current) <count) {
+			return getRight(current);
+		}
+		
+		else if(getLeft(current) < count) {
+			return getLeft(current);
+		}
+		else {
+			return -1;
 		}
 	}
 
@@ -81,13 +116,14 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 
 
 	public void enqueue(E object) {
-		queue.add(object);
-		
-		int current = queue.size()-1;
-		while (queue.get(current).compareTo(getParentVal(current)) > 0) {
-			swap(current,getParent(current));
-			current = getParent(current);
-		}
+			count++;
+			queue.add(count,object);
+			int current = count;
+			while (queue.get(current).compareTo(getParentVal(current)) > 0) {
+				swap(current,getParent(current));
+				current = getParent(current);
+			}	
+
 		
 		
 		}
@@ -97,7 +133,7 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 	}
 
 	public boolean isEmpty() {
-		return queue.size() == 0;
+		return count == -1;
 	}
 	
 
