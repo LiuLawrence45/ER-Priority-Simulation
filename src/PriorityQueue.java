@@ -108,10 +108,10 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 	}
 	
 	private int getParent(int current) {
-		return current/2;
+		return (current-1)/2;
 	}
 	private E getParentVal(int current) {
-		return queue.get(current/2);
+		return queue.get((current-1)/2);
 	}
 
 

@@ -62,7 +62,7 @@ public class Patient implements Comparable<Patient>{
 			return -1;
 		}
 		else {
-			if (order > other.getOrder()) {
+			if (order < other.getOrder()) {
 				return 1;
 			}
 			return -1;
@@ -70,7 +70,8 @@ public class Patient implements Comparable<Patient>{
 	}
 	
 	public String toString() {
-		String temp = first + " " + last + " " + priority + " " + order;
+		//String temp = first + " " + last + " " + priority + " " + order;
+		String temp = priority + " " + order;
 		return temp;
 	}
 
