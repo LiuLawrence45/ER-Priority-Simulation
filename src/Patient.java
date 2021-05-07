@@ -70,8 +70,9 @@ public class Patient implements Comparable<Patient>{
 	}
 	
 	public String toString() {
-		//String temp = first + " " + last + " " + priority + " " + order;
-		String temp = priority + " " + order;
+		String temp = first + " " + last + " "  + priority;
+		//String temp = priority + " " + order;
+		
 		return temp;
 	}
 

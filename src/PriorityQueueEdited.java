@@ -6,9 +6,9 @@
 
 import java.util.*;
 
-public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
+public class PriorityQueueEdited<E extends Comparable<E>> implements PureQueue<E>{
 	
-	private int count = -1;
+//	private int queue.size() = -1;
 	private ArrayList<E> queue = new ArrayList<E>();
 	
 	
@@ -26,22 +26,21 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 			throw new NoSuchElementException("Queue is empty");
 			
 		}
-		else if (count == 0) {
+		else if (queue.size() == 1) {
 
 			E returnto = queue.get(0);
 			System.out.println(returnto.toString());
 			queue.set(0, null);
-			count--;
 			return returnto;
 		}
 		else {
 
 			E returnto = queue.get(0);
 			System.out.println(returnto.toString());
-			E temp = queue.get(count);
+			E temp = queue.get(queue.size()-1);
 			//printArray();
-			//queue.set(count, null);
-			queue.remove(count);
+			//queue.set(queue.size(), null);
+			queue.remove(queue.size()-1);
 			queue.set(0,temp);
 			
 			int current = 0;
@@ -52,7 +51,6 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 				largestChild = largestChild(current);
 				
 			}
-			count--;
 			return returnto;
 			
 			
@@ -67,18 +65,18 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 	 * @return
 	 */
 	private int largestChild(int current) {
-		if(getRight(current) < count && getLeft(current) < count) {
+		if(getRight(current) < queue.size() && getLeft(current) < queue.size()) {
 			if (getRightVal(current).compareTo(getLeftVal(current)) > 0) {
 				return getRight(current);
 			}
 			return getLeft(current);
 		}
 		
-		else if (getRight(current) <count) {
+		else if (getRight(current) < queue.size()) {
 			return getRight(current);
 		}
 		
-		else if(getLeft(current) < count) {
+		else if(getLeft(current) < queue.size()) {
 			return getLeft(current);
 		}
 		else {
@@ -120,13 +118,18 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 
 
 	public void enqueue(E object) {
-			count++;
-			queue.add(count,object);
-			int current = count;
+		if (queue.size() == 0) {
+			queue.add(object);
+		}
+		else {
+			queue.add(queue.size(),object);
+			int current = queue.size()-1;
 			while (queue.get(current).compareTo(getParentVal(current)) > 0) {
 				swap(current,getParent(current));
 				current = getParent(current);
 			}	
+		}
+
 
 		
 		
@@ -137,7 +140,7 @@ public class PriorityQueue<E extends Comparable<E>> implements PureQueue<E>{
 	}
 
 	public boolean isEmpty() {
-		return count == -1;
+		return queue.size() == 0;
 	}
 	
 
